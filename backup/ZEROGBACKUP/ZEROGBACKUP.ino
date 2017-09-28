@@ -32,7 +32,7 @@ const int STATE_BUTTON_PRESSED = 5;
 int pump_state = STATE_IDLE;
 
 Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
-Adafruit_StepperMotor *Stepper1 = AFMS.getStepper(200, 2);
+Adafruit_StepperMotor *Stepper1 = AFMS.getStepper(200, 1);
 
 
 
@@ -67,11 +67,11 @@ void loop() {
       Serial.println("case set values"); 
       pushRate = map(analogRead(pot1), 0, 1023, 0, 10); //pushing speed
       Serial.println(pushRate);
-      pushTarget = map(analogRead(pot2), 0, 1023, 0, 100);//pushing target
+      pushTarget = map(analogRead(pot2), 0, 1023, 0, 1000);//pushing target
        Serial.println(pushTarget);
       pullRate = map(analogRead(pot3), 0, 1023, 0, 10);//pulling speed
        Serial.println(pullRate);
-      pullTarget = map(analogRead(pot4), 0, 1023, 0,100 );//pulling target
+      pullTarget = map(analogRead(pot4), 0, 1023, 0,1000 );//pulling target
        Serial.println(pullTarget);
       pumpOn = digitalRead(switch1);//sitch checking if pump is on     
       if (pumpOn == true && pushRate>0 ||pullRate>0){
@@ -92,7 +92,7 @@ void loop() {
       break;
       }
        if(pushTarget!=0){
-       Stepper1->setSpeed(pushRate);  //set step speed based on push rate
+       Stepper1->setSpeed(pushRate*100);  //set step speed based on push rate
        Stepper1->step(2, FORWARD, DOUBLE); //move stepper one step in desired speed
        
        
@@ -116,7 +116,7 @@ void loop() {
       //move stepper one step in desired speed
        //Serial.println("pulling...");
        if(pullTarget!=0){
-       Stepper1->setSpeed(pullRate);  //set step speed based on push rate
+       Stepper1->setSpeed(pullRate*100);  //set step speed based on push rate
        Stepper1->step(2, BACKWARD, DOUBLE); //move stepper one step
        stepCounter+=1;//count steps
        }
